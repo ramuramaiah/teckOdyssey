@@ -1,0 +1,14 @@
+
+Ú
+addressbook.protoprotobuf_examples"¼
+Person
+name (	Rname
+id (Rid
+email (	Remail=
+phones (2%.protobuf_examples.Person.PhoneNumberRphones9
+PhoneNumber
+number (	Rnumber
+type (	Rtype"@
+AddressBook1
+people (2.protobuf_examples.PersonRpeopleB)
+com.protobuf.examplesBAddressBookSerDebproto3
