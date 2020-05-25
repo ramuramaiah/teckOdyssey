@@ -1,0 +1,122 @@
+[ 
+  { 
+    "customer": {
+      "name": "Ramu",
+	  "id": "1",
+	  "email": "rr@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:1", "line2": "Prestige Apartments", "line3": "WhiteField", "city": "Bangalore", "zipCode": "560103", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Arjun",
+	  "id": "2",
+	  "email": "ar@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:2", "line2": "Prestige Apartments", "line3": "WhiteField", "city": "Bangalore", "zipCode": "560103", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Mohan",
+	  "id": "3",
+	  "email": "mr@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:3", "line2": "Prestige Apartments", "line3": "WhiteField", "city": "Bangalore", "zipCode": "560103", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Shekar",
+	  "id": "4",
+	  "email": "sr@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:4", "line2": "Prestige Apartments", "line3": "WhiteField", "city": "Bangalore", "zipCode": "560103", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Kumar",
+	  "id": "5",
+	  "email": "kr@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:5", "line2": "Prestige Apartments", "line3": "WhiteField", "city": "Bangalore", "zipCode": "560103", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Abhishek",
+	  "id": "6",
+	  "email": "ar@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:1", "line2": "Mantri Apartments", "line3": "Koramangala", "city": "Bangalore", "zipCode": "560032", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Abhilash",
+	  "id": "7",
+	  "email": "abhi@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:2", "line2": "Mantri Apartments", "line3": "Koramangala", "city": "Bangalore", "zipCode": "560032", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Akash",
+	  "id": "8",
+	  "email": "akash@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:3", "line2": "Mantri Apartments", "line3": "Koramangala", "city": "Bangalore", "zipCode": "560032", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Avinash",
+	  "id": "9",
+	  "email": "avi@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:4", "line2": "Mantri Apartments", "line3": "Koramangala", "city": "Bangalore", "zipCode": "560032", "state": "Karnataka"}
+	}
+  },
+  { 
+    "customer": {
+      "name": "Salman",
+	  "id": "10",
+	  "email": "sal@gmail.com",
+	  "phones": [
+	    {"number": "12345", "type": "HOME"},
+		{"number": "54321", "type": "MOBILE"}
+	  ],
+	  "address": {"line1": "Flat No:5", "line2": "Mantri Apartments", "line3": "Koramangala", "city": "Bangalore", "zipCode": "560032", "state": "Karnataka"}
+	}
+  }
+]
