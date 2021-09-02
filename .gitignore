@@ -3,3 +3,7 @@ netty.recycler/.classpath
 netty.recycler/.project
 netty.recycler/.settings/org.eclipse.jdt.core.prefs
 netty.recycler/.settings/org.eclipse.m2e.core.prefs
+guice.mockito/.project
+guice.mockito/.classpath
+guice.mockito/.settings/org.eclipse.jdt.core.prefs
+guice.mockito/.settings/org.eclipse.m2e.core.prefs
