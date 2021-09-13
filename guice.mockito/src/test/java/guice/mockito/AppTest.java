@@ -14,8 +14,7 @@ public class AppTest
     public void testUnreachableCreditCardProcessor() throws UnreachableException
     {
     	CreditCardProcessor unreachableCCP = Mockito.mock(CreditCardProcessor.class);
-    	CreditCard mockCreditCard = Mockito.mock(CreditCard.class);
-    	Mockito.when(unreachableCCP.charge(mockCreditCard, new BigDecimal(100.0))).thenThrow(new UnreachableException());
-    	unreachableCCP.charge(mockCreditCard, new BigDecimal(100.0));
+    	Mockito.when(unreachableCCP.charge(Mockito.any(CreditCard.class), Mockito.any(BigDecimal.class))).thenThrow(new UnreachableException());
+    	unreachableCCP.charge(Mockito.any(CreditCard.class), Mockito.any(BigDecimal.class));
     }
 }
