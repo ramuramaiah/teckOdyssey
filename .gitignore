@@ -10,3 +10,5 @@ guice.mockito/.settings/org.eclipse.m2e.core.prefs
 elasticsearch.experiments/.classpath
 elasticsearch.experiments/.project
 *.prefs
+gRPCExamples/grpc-hello-server/.classpath
+gRPCExamples/grpc-hello-server/.project
