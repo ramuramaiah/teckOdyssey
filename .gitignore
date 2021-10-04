@@ -12,3 +12,5 @@ elasticsearch.experiments/.project
 *.prefs
 gRPCExamples/grpc-hello-server/.classpath
 gRPCExamples/grpc-hello-server/.project
+elastic.recipes/.classpath
+elastic.recipes/.project

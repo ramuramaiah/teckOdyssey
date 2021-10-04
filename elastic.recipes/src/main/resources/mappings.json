@@ -1,0 +1,35 @@
+{
+	"properties": {
+		"title": {
+			"type": "text"
+		},
+		"description": {
+			"type": "text"
+		},
+		"ingredients": {
+			"type": "text",
+			"fields": {
+				"keyword": {
+					"type": "keyword"
+				}
+			}
+		},
+		"preparation_time_minutes": {
+			"type": "integer"
+		},
+		"servings": {
+			"properties": {
+				"min": {
+					"type": "integer"
+				},
+				"max": {
+					"type": "integer"
+				}
+			}
+		},
+		"inserted_at": {
+			"type": "date",
+			"format": "date_optional_time"
+		}
+	}
+}
