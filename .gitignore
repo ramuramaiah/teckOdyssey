@@ -14,3 +14,5 @@ gRPCExamples/grpc-hello-server/.classpath
 gRPCExamples/grpc-hello-server/.project
 elastic.recipes/.classpath
 elastic.recipes/.project
+redis.lettuce/.classpath
+redis.lettuce/.project
