@@ -1,0 +1,91 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: trigger-etl-webhook
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: webhook-dep
+      eventSourceName: etl-webhook
+      eventName: etl-webhook
+  triggers:
+    - template:
+        name: etl-webhook-workflow-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: etl-webhook-
+              spec:
+                entrypoint: etl-run
+                arguments:
+                  parameters:
+                  - name: partition
+                    value: value
+                  - name: kube_api_server_url
+                    valueFrom:
+                      configMapKeyRef:
+                        name: simple-parameters
+                        key: kube_api_server_url  
+                templates:
+                - name: prepare-etl-input
+                  inputs:
+                    parameters:
+                    - name: partition
+                    - name: kube_api_server_url
+                  script:
+                    image: <path_to_python_3.6_image>
+                    imagePullPolicy: IfNotPresent
+                    command: [ python ]
+                    source: |
+                      command = """
+                      /opt/spark/bin/spark-submit \
+                      --master {kube_api_server_url} \
+                      --deploy-mode cluster \
+                      --name etl-job \
+                      --class com.b2b.etl.B2BETLSparkJob \
+                      --conf spark.etl.input.path.partition={partition} \
+                      local:///opt/spark/jars/b2b-etl.jar"
+                      """
+                      command = command.format(partition="{{inputs.parameters.partition}}",
+                      kube_api_server_url="{{inputs.parameters.kube_api_server_url}}")
+                      print(command)
+                - name: transform
+                  inputs:
+                    parameters:
+                    - name: command
+                  container:
+                    securityContext:
+                      runAsUser: 0
+                    command: [sh, -c]
+                    args: ["{{inputs.parameters.command}}"]
+                    image: <path_to_etl_image>
+                    imagePullPolicy: IfNotPresent
+                    resources: { }
+                - name: etl-run
+                  dag:
+                    tasks:
+                    - name: prepare-etl-input
+                      template: prepare-etl-input
+                      arguments:
+                        parameters:
+                          - name: partition
+                            value: "{{workflow.parameters.partition}}"
+                          - name: kube_api_server_url
+                            value: "{{workflow.parameters.kube_api_server_url}}"
+                    - name: transform
+                      dependencies: [prepare-etl-input]
+                      template: transform
+                      arguments:
+                        parameters:
+                          - name: command
+                            value: "{{tasks.prepare-etl-input.outputs.result}}"
+          parameters:
+            - src:
+                dependencyName: webhook-dep
+                dataTemplate: "{{ .Input.body.partition }}"
+              dest: spec.arguments.parameters.0.value

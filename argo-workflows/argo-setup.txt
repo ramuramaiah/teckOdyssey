@@ -1,0 +1,14 @@
+1. Follow the steps in https://argoproj.github.io/argo-workflows/quick-start/ to set up argo workflow server and CLI.
+2. Use the following contents and create a file named role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflow
+  namespace: argo
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+3. Execute the command, kubectl apply -f role.yaml
+4. Create a service account using the command, kubectl create serviceaccount argo --namespace=argo
+5. Create a role binding using the command, kubectl create rolebinding argo-submit --serviceaccount=argo:argo -n argo --role=workflow
