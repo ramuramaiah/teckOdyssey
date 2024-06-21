@@ -47,9 +47,9 @@ spec:
                       --master {kube_api_server_url} \
                       --deploy-mode cluster \
                       --name etl-job \
-                      --class com.b2b.etl.B2BETLSparkJob \
+                      --class com.etl.ETLSparkJob \
                       --conf spark.etl.input.path.partition={partition} \
-                      local:///opt/spark/jars/b2b-etl.jar"
+                      local:///opt/spark/jars/etl-sparkJob.jar"
                       """
                       command = command.format(partition="{{inputs.parameters.partition}}",
                       kube_api_server_url="{{inputs.parameters.kube_api_server_url}}")
