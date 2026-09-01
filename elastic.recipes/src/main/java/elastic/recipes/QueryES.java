@@ -1,76 +1,89 @@
 package elastic.recipes;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
+
 import elastic.recipes.model.Recipe;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.apache.http.HttpHost;
-import org.apache.logging.log4j.LogManager;
-
 public class QueryES {
-	static Logger LOG = LogManager.getLogger(QueryES.class);
-	private static final ObjectMapper objectMapper = new ObjectMapper();
-	private static final String INDEX_NAME = "recipes";
 
-	public static void main(String[] args) {
-		try (RestHighLevelClient client = new RestHighLevelClient(
-				RestClient.builder(new HttpHost("localhost", 9200, "http")))) {
-			List<Recipe> recipes = findRecipeByIngredient(client, "chicken");
-			LOG.info("Found {} recipes by ingredient: {}", recipes.size(), recipes);
-		} catch (IOException e) {
-			LOG.error("Error while accessing ES", e);
-		}
-	}
+    private static final Logger LOG = LogManager.getLogger(QueryES.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String INDEX_NAME = "recipes";
 
-	public static List<Recipe> findRecipeByIngredient(RestHighLevelClient restClient, String ingredient) {
-		try {
-			SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
-			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-			MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("ingredients", ingredient);
-			searchSourceBuilder.query(matchQueryBuilder);
-			searchRequest.source(searchSourceBuilder);
 
-			System.out.println("findRecipeByIngredient query: " + matchQueryBuilder.toString());
+    public static void main(String[] args) {
 
-			SearchResponse response = restClient.search(searchRequest, RequestOptions.DEFAULT);
-			SearchHits hits = response.getHits();
-			SearchHit[] searchHits = hits.getHits();
-			List<Recipe> catalogItems = Arrays.stream(searchHits).map(e -> mapJsonToRecipe(e.getSourceAsString()))
-					.filter(Objects::nonNull).collect(Collectors.toList());
+        try (Rest5Client restClient = Rest5Client.builder(
+                new HttpHost("http", "localhost", 9200)
+        ).build()) {
 
-			return catalogItems;
-		} catch (IOException ex) {
-			LOG.warn("Could not post {} to ES", ingredient, ex);
-		}
-		return Collections.emptyList();
+            Rest5ClientTransport transport =
+                    new Rest5ClientTransport(
+                            restClient,
+                            new JacksonJsonpMapper(OBJECT_MAPPER)
+                    );
 
-	}
+            ElasticsearchClient client = new ElasticsearchClient(transport);
 
-	protected static Recipe mapJsonToRecipe(String json) {
-		try {
-			return objectMapper.readValue(json, Recipe.class);
-		} catch (IOException e) {
-			LOG.warn("Could not convert {} to Recipe", e.getMessage());
-		}
-		return null;
-	}
+            List<Recipe> recipes = findRecipeByIngredient(client, "chicken");
+            LOG.info("Found {} recipes by ingredient: {}", recipes.size(), recipes);
+
+        } catch (IOException e) {
+            LOG.error("Error while accessing ES", e);
+        }
+    }
+
+
+    /**
+     * Searches for recipes that match the given ingredient
+     * using a match query on the "ingredients" field.
+     */
+    public static List<Recipe> findRecipeByIngredient(
+            ElasticsearchClient client,
+            String ingredient) {
+
+        try {
+            SearchResponse<Recipe> response =
+                    client.search(s -> s
+                                    .index(INDEX_NAME)
+                                    .query(q -> q
+                                            .match(m -> m
+                                                    .field("ingredients")
+                                                    .query(ingredient)
+                                            )
+                                    ),
+                            Recipe.class
+                    );
+
+            LOG.info(
+                    "findRecipeByIngredient query: match(ingredients, {})",
+                    ingredient
+            );
+
+            return response.hits().hits().stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+
+        } catch (IOException ex) {
+            LOG.warn("Could not query ES for ingredient {}", ingredient, ex);
+        }
+
+        return Collections.emptyList();
+    }
 }
