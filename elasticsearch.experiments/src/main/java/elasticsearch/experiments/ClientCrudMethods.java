@@ -3,8 +3,6 @@ package elasticsearch.experiments;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import elasticsearch.experiments.model.CatalogItem;
 
 /**
@@ -14,7 +12,7 @@ import elasticsearch.experiments.model.CatalogItem;
 public interface ClientCrudMethods {
 
 	/**
-	 * Adds an items to Elasticsearch index
+	 * Adds items to Elasticsearch index
 	 * @param items items to be added
 	 */
 	void createCatalogItem(List<CatalogItem> items);
@@ -22,7 +20,7 @@ public interface ClientCrudMethods {
 	/**
 	 * Returns an item in the index based on specified id
 	 * @param idToFind id
-	 * @returnan item in the index based on specified id
+	 * @return an item in the index based on specified id
 	 */
 	Optional<CatalogItem> getCatalogItemById(Integer idToFind);
 
@@ -41,7 +39,7 @@ public interface ClientCrudMethods {
 	List<CatalogItem> findCatalogItemByCategory(String token);
 
 	/**
-	 * Returns items that match category token
+	 * Returns items that match category token and sorts by price ascending
 	 * @param token category token
 	 * @return items that match category token
 	 */
@@ -50,13 +48,11 @@ public interface ClientCrudMethods {
 	/**
 	 * Updates document in Elasticsearch
 	 * @param item document to update
-	 * @return update status
-	 * @throws JsonProcessingException
 	 */
 	void updateCatalogItem(CatalogItem item);
 
 	/**
-	 * Updates just the description field of a document base on id
+	 * Updates just the description field of a document based on id
 	 * @param id id of the document
 	 * @param description new description
 	 */
