@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch.core.DeleteResponse;
@@ -60,10 +61,11 @@ public class CrudMethodsSynchronous implements ClientCrudMethods {
 		items.forEach(e -> {
 			try {
 				IndexResponse indexResponse = getClient().index(i -> i
-						.index(getIndex())
-						.id(String.valueOf(e.getId()))
-						.document(e)
-				);
+							.index(getIndex())
+							.id(String.valueOf(e.getId()))
+							.document(e)
+							.refresh(Refresh.WaitFor)
+					);
 				if (indexResponse.result() == Result.Created) {
 					LOG.info("Added catalog item with id {} to ES index {}", e.getId(), indexResponse.index());
 				} else if (indexResponse.result() == Result.Updated) {
